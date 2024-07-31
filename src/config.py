@@ -34,11 +34,11 @@ def load_config(path: str | None = None) -> Config:
     return Config(
         api_tokens=APITokens(financialmodelingprep=env("FINANCIALMODELINGPREP")),
         data_base=DataBase(
-            host=env("DB_HOST"),
-            port=int(env("DB_PORT")),
-            user=env("DB_USER"),
-            password=env("DB_PASS"),
-            db_name=env("DB_NAME"),
+            host=env("POSTGRES_HOST"),
+            port=int(env("POSTGRES_PORT")),
+            user=env("POSTGRES_USER"),
+            password=env("POSTGRES_PASSWORD"),
+            db_name=env("POSTGRES_DB"),
         ),
         params=["ETHUSD", "BZUSD", "GOLD", "SPY", "NGUSD", "USDTUSD", "USDX", "DJIA", "LTCUSD", "BNBUSD", "XRPUSD"],
     )

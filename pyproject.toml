@@ -7,18 +7,16 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-okama = "^1.4.1"
 sqlalchemy = "^2.0.31"
 environs = "^11.0.0"
 pandas = "^2.2.2"
 numpy = "^2.0.1"
 seaborn = "^0.13.2"
 matplotlib = "^3.9.1"
-pytest-asyncio = "^0.23.8"
 asyncpg = "^0.29.0"
 plotly = "^5.23.0"
-tinkoff-investments = "^0.2.0b104"
 statsmodels = "^0.14.2"
+aiohttp = "^3.10.0"
 
 
 [tool.poetry.group.lint.dependencies]
@@ -58,13 +56,10 @@ warn_return_any = true
 exclude = 'venv'
 
 
-
-
-
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
 pytest-cov = "^4.1.0"
+pytest-asyncio = "^0.23.8"
 
 [build-system]
 requires = ["poetry-core"]

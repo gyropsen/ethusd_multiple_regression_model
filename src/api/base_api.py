@@ -1,17 +1,14 @@
 from datetime import datetime, timedelta
-
 import aiohttp
-from aiohttp import ClientSession
 
 from src.api.api_abc import API_ABC
-from src.database.manager import Database
 
 
 class BaseAPI(API_ABC):
     def __init__(self, token: str):
         self.__token = token
 
-    async def get_price(self, session: ClientSession, params: dict, url: str) -> list:
+    async def get_price(self, session: aiohttp.ClientSession, params: dict, url: str) -> list:
         params["apikey"] = self.__token
         async with session.get(url, params=params) as response:
             data: list = await response.json()
