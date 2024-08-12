@@ -1,14 +1,10 @@
 import asyncio
 
-from src.api.base_api import BaseAPI
-from src.config import load_config
 from src.database.manager import Database
 from src.utils import get_dataframe, get_model
 
 
 async def main():
-    # Конфигурация
-    config = load_config()
 
     # База данных
     db = Database()
@@ -16,17 +12,17 @@ async def main():
 
     while True:
         # Очистка таблиц от старых данных
-        await db.delete_all()
+        # await db.delete_all()
+        #
+        # # API и получение данных
 
-        # API и получение данных
-        fin_api = BaseAPI(config.api_tokens.financialmodelingprep)
-        result = await asyncio.gather(
-            *[asyncio.create_task(fin_api.pars_data(symbol, days=90)) for symbol in config.params]
-        )
-
-        # Запись в базу
-        for res in result:
-            await db.insert_all(res[0], res[1])
+        # result = await asyncio.gather(
+        #     *[asyncio.create_task(fin_api.pars_data(symbol, days=90)) for symbol in config.params]
+        # )
+        #
+        # # Запись в базу
+        # for res in result:
+        #     await db.insert_all(res[0], res[1])
 
         # Получение датафрейма из базы данных
         df = await get_dataframe(await db.get_dataframe())

@@ -23,8 +23,8 @@ tables = [
 
 class Database:
     async def create_new_tables(self):
-        async with async_engine.begin() as conn:
-            if not await self.exists_tables():
+        if not await self.exists_tables():
+            async with async_engine.begin() as conn:
                 await conn.run_sync(Base.metadata.drop_all)
                 await conn.run_sync(Base.metadata.create_all)
 
