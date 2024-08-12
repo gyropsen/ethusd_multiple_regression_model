@@ -25,7 +25,7 @@ async def test_api_alphavantage(get_config_data: Config):
 
 # @pytest.mark.parametrize("arg_1, arg_2, expected_result", [(2, 2, f"{date_now} foo ok"),
 #                                                            (2, "2",
-#                                                             f"{date_now} foo error: unsupported operand type(s) for +:"
+#                                                          f"{date_now} foo error: unsupported operand type(s) for +:"
 #                                                             " 'int' and 'str' Inputs: (2, '2') {}"),
 #                                                            (None, None,
 #                                                             f"{date_now} foo error: unsupported operand type(s) for "

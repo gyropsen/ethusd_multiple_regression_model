@@ -6,7 +6,6 @@ from src.config import config
 from src.database.manager import Database
 from src.utils import update_model
 
-
 db = Database()
 fin_api = BaseAPI(config.api_tokens.financialmodelingprep)
 

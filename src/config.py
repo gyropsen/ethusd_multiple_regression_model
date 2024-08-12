@@ -59,7 +59,7 @@ def load_config(path: str | None = None) -> Config:
             user=env("RABBITMQ_USER"),
             password=env("RABBITMQ_PASSWORD"),
         ),
-        params=["ETHUSD", "BZUSD", "GOLD", "SPY", "NGUSD", "USDTUSD", "USDX", "DJIA", "LTCUSD", "BNBUSD", "XRPUSD"]
+        params=["ETHUSD", "BZUSD", "GOLD", "SPY", "NGUSD", "USDTUSD", "USDX", "DJIA", "LTCUSD", "BNBUSD", "XRPUSD"],
     )
 
 
