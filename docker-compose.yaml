@@ -1,8 +1,8 @@
-aversion: "3.8"
+version: "3.8"
 
 services:
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3.10.7-management
     hostname: rabbitmq
     restart: always
     environment:
@@ -40,6 +40,33 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    env_file:
+      - .env
+
+  celery:
+    build: .
+    tty: true
+    command: sh -c "celery -A src.app_celery.celery worker -l INFO"
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+      - database
+    env_file:
+      - .env
+
+  celery-beat:
+    build: .
+    tty: true
+    command: sh -c "celery -A src.app_celery.celery beat -s ~/app"
+    restart: on-failure
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+      - database
+      - celery
     env_file:
       - .env
 

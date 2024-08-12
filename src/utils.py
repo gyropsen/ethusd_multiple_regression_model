@@ -80,7 +80,7 @@ async def get_model(df: pd.DataFrame) -> pd.DataFrame:
     return filter_ols
 
 
-async def clear_and_update_data(db: Database, fin_api: BaseAPI, params: list) -> None:
+async def update_model(db: Database, fin_api: BaseAPI, params: list) -> None:
     """
     Функция очистки и обновления данных
     :param db: менеджер бд
@@ -94,6 +94,12 @@ async def clear_and_update_data(db: Database, fin_api: BaseAPI, params: list) ->
     result = await asyncio.gather(
         *[asyncio.create_task(fin_api.pars_data(symbol, days=90)) for symbol in params]
     )
-    print(result)
     # Запись в базу данных
     await asyncio.gather(*[db.insert_all(res[0], res[1]) for res in result])
+
+    # Получение датафрейма из базы данных
+    df = await get_dataframe(await db.get_dataframe())
+
+    # Построение модели
+    model = await get_model(df)
+    print(model)
