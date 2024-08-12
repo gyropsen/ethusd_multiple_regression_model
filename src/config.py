@@ -4,6 +4,18 @@ from environs import Env
 
 
 @dataclass
+class RabbitMQ:
+    host: str
+    port: str
+    user: str
+    password: str
+
+    @property
+    def rabbitmq_url(self):
+        return f"amqp://{self.user}:{self.password}@{self.host}:{self.port}"
+
+
+@dataclass
 class APITokens:
     financialmodelingprep: str
 
@@ -25,6 +37,7 @@ class DataBase:
 class Config:
     api_tokens: APITokens
     data_base: DataBase
+    rabbitmq: RabbitMQ
     params: list
 
 
@@ -40,5 +53,14 @@ def load_config(path: str | None = None) -> Config:
             password=env("POSTGRES_PASSWORD"),
             db_name=env("POSTGRES_DB"),
         ),
+        rabbitmq=RabbitMQ(
+            host=env("RABBITMQ_HOST"),
+            port=env("RABBITMQ_PORT"),
+            user=env("RABBITMQ_USER"),
+            password=env("RABBITMQ_PASSWORD"),
+        ),
         params=["ETHUSD", "BZUSD", "GOLD", "SPY", "NGUSD", "USDTUSD", "USDX", "DJIA", "LTCUSD", "BNBUSD", "XRPUSD"],
     )
+
+
+config = load_config()

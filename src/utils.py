@@ -1,13 +1,18 @@
+import asyncio
+
 import pandas as pd
 import scipy
 import statsmodels.formula.api as sm
+
+from src.api.base_api import BaseAPI
+from src.database.manager import Database
 
 
 async def get_dataframe(data) -> pd.DataFrame:
     """
     Получить датафрейм из данных
     :param data: запрос из бд
-    :return: pd.DataFrame
+    :return: DataFrame
     """
     print(len(data))
     return pd.DataFrame(
@@ -74,3 +79,26 @@ async def get_model(df: pd.DataFrame) -> pd.DataFrame:
         if ols:
             filter_ols = ols
     return filter_ols
+
+
+async def update_model(db: Database, fin_api: BaseAPI, params: list) -> None:
+    """
+    Функция очистки и обновления данных
+    :param db: менеджер бд
+    :param fin_api: менеджер api
+    :param params: конфиг файлы
+    :return: None
+    """
+    # Очистка таблиц от старых данных
+    await db.delete_all()
+    # Получение данных
+    result = await asyncio.gather(*[asyncio.create_task(fin_api.pars_data(symbol, days=90)) for symbol in params])
+    # Запись в базу данных
+    await asyncio.gather(*[db.insert_all(res[0], res[1]) for res in result])
+
+    # Получение датафрейма из базы данных
+    df = await get_dataframe(await db.get_dataframe())
+
+    # Построение модели
+    model = await get_model(df)
+    print(model)
